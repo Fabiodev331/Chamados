@@ -1,0 +1,16 @@
+import { Routes, Route } from "react-router-dom";
+
+import SignIn from '../SignIn';
+import SignUp from '../SignUp';
+
+function RoutesApp(){
+   return(
+      <Routes>
+         <Route path="/" element={ <SignIn/> } />
+
+         <Route path="/register" element={ <SignUp/> } />
+      </Routes>
+   )
+}
+
+export default RoutesApp;
