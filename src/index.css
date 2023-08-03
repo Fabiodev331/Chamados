@@ -14,6 +14,10 @@ bory{
   background-color: #EFEFEF;
 }
 
+div{
+  font-family: sans-serif;
+}
+
 a{
   text-decoration: none;
   cursor: pointer;

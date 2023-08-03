@@ -12,13 +12,13 @@ export default function SideBar(){
       <div className="sidebar" >
          <div>
             <img src={ user.avatarUrl === null ? avatarImg : user.avatarUrl } alt='Foto de perfil' />
-            
+         </div>   
             <Link to="/dashboard" >
                <FiHome color='#FFF' size={24} />
                Chamados
             </Link>
 
-            <Link to="/cusrtomers" >
+            <Link to="/customers" >
                <FiUser color='#FFF' size={24} />
                Clientes
             </Link>
@@ -27,7 +27,6 @@ export default function SideBar(){
                <FiSettings color='#FFF' size={24} />
                Perfil
             </Link>
-         </div>
       </div>
    )
 }
