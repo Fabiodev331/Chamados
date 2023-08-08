@@ -5,7 +5,7 @@ import { FiUser } from "react-icons/fi"
 
 export default function Customers(){
    return(
-      <div>
+      <div className="customers" >
          <SideBar/>
 
          <div className="content" >
