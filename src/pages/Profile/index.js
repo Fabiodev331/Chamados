@@ -10,7 +10,7 @@ import { FiSettings, FiUpload } from "react-icons/fi"
 
 
 export default function Profile(){
-   const {user} = useContext(AuthContext);
+   const {user, setUser, storageUser} = useContext(AuthContext);
    const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
    return(
       <div className="profile" >
