@@ -104,7 +104,7 @@ export default function Profile(){
                <FiSettings size={24} />
             </Title>
 
-            <div className="container-profile" > 
+            <div className="containers" > 
                <form className="form-profile" onSubmit={handleSubmit} >
                   <label className="label-avatar">
                      <span>
@@ -121,16 +121,24 @@ export default function Profile(){
                   </label>
 
                   <label>Nome</label>
-                  <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+                  <input 
+                  type="text" 
+                  value={nome} 
+                  onChange={(e) => setNome(e.target.value)} 
+                  />
 
                   <label>Email</label>
-                  <input type="text" value={email} disabled={true} />
+                  <input 
+                  type="text" 
+                  value={email} 
+                  disabled={true} 
+                  />
               
                   <button type="submit" >Salvar</button>
                </form>
             </div>
 
-            <div className="container-profile" >
+            <div className="containers" >
                <button className="logout-btn" onClick={handleLogOut} >Sair</button>                 
             </div>
          </div>
