@@ -1,0 +1,18 @@
+.tickets{
+   height: 100vh;
+   background-color: #dbdada;
+}
+form textarea{
+   resize: none;
+   height: 105px;
+}
+form input[type='radio']:not(:first-child){
+   margin-left: 10px;
+}
+.status span{
+   padding-left: 0.5em;
+   font-size: 1.2em;
+}
+.status{
+   margin-bottom: 1em;
+}
