@@ -10,18 +10,23 @@ import { Link } from 'react-router-dom';
 import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase/firestore';
 import { db } from '../../services/firebaseConection';
 
+import { format } from 'date-fns';
+
 const listRef = collection(db, "chamados")
 
 export default function Dashboard(){
    const [listaChamados, setListaChamados] = useState([])
    const [loading, setLoading] = useState(true)
    const [isEmpty, setIsEmpty] = useState(false)
+   const [lastDocs, setLastDocs] = useState()
+   const [loadingMore, setLoadingMore] = useState(false)
 
    useEffect(() => {
       async function loadingChamados(){
          const q = query(listRef, orderBy('created', 'desc'), limit(10));
          
          const querySnapshot = await getDocs(q)
+         setListaChamados([])
          await updateState(querySnapshot)
 
          setLoading(false)
@@ -47,16 +52,42 @@ export default function Dashboard(){
                cliente: doc.data().cliente,
                clienteId: doc.data().clienteId,
                created: doc.data().created,
+               createdFormat: format(doc.data().created.toDate(), 'dd/MM/yyyy'),
                status: doc.data(). status,
                complemento: doc.data().complemento
             })
          })
+         const lastDoc = querySnapshot.docs[querySnapshot.docs.length -1]
+         setLastDocs(lastDoc)
 
          setListaChamados(listaChamados => [...listaChamados, ...lista])
+
       }
       else{
          setIsEmpty(true)
       }
+      setLoadingMore(false)
+   }
+
+   function handleMore(){
+      alert('teste')
+   }
+
+   if(loading){
+      return(
+         <div>
+            <SideBar/>
+
+            <div className="content" >
+               <Title name="Tickets" >
+                  <FiMessageSquare size={24} />
+               </Title>
+               <div className='containers notickets'>
+                  <span>Buscando chamados...</span>
+               </div>
+            </div>
+         </div>
+      )
    }
 
    return(
@@ -96,26 +127,33 @@ export default function Dashboard(){
                            </tr>
                         </thead>
                         <tbody>
-                           <tr>
-                              <td data-label='Cliente'>Restaurante 01</td>
-                              <td data-label='Assunto'>Suporte</td>
-                              <td data-label='Status'>
-                                 <span className='badge' style={{backgroundColor: '#999'}}>
-                                    Em aberto
-                                 </span>
-                              </td>
-                              <td data-label='Cadastrado'>21/08/2023</td>
-                              <td data-label='#'>
-                                 <button className='action' style={{backgroundColor: '#3583f6'}}>
-                                    <FiSearch size={17} color='#FFF'/>
-                                 </button>
-                                 <button className='action' style={{backgroundColor: '#f6a935'}}>
-                                    <FiEdit2 size={17} color='#FFF'/>
-                                 </button>
-                              </td>
-                           </tr>
+                           {listaChamados.map((item, index) => {
+                              return(
+                                 <tr>
+                                    <td data-label='Cliente'>{item.cliente}</td>
+                                    <td data-label='Assunto'>{item.assunto}</td>
+                                    <td data-label='Status'>
+                                       <span className='badge' style={{backgroundColor: '#999'}}>
+                                          {item.status}
+                                       </span>
+                                    </td>
+                                    <td data-label='Cadastrado'>{item.createdFormat}</td>
+                                    <td data-label='#'>
+                                       <button className='action' style={{backgroundColor: '#3583f6'}}>
+                                          <FiSearch size={17} color='#FFF'/>
+                                       </button>
+                                       <button className='action' style={{backgroundColor: '#f6a935'}}>
+                                          <FiEdit2 size={17} color='#FFF'/>
+                                       </button>
+                                    </td>
+                                 </tr>
+                              )
+                           })}
                         </tbody>
                      </table>
+
+                     {loadingMore && <h3>Buscando mais chamados...</h3>}
+                     {!loadingMore && !isEmpty && <button className='btn-more' onClick={handleMore}>Buscar mais</button>}
                      </>
                   )
                }
