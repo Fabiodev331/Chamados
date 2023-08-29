@@ -90,6 +90,9 @@ font-weight: 600;
    background-color: #0c184d;
    transform: scale(1.05);
 }
+.text-buscar{
+   margin: 0.5em 0;
+}
 
 
 @media screen and (max-width: 600px) {
