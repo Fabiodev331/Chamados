@@ -10,7 +10,12 @@ import { db } from '../../services/firebaseConection';
 import { collection, getDoc, getDocs, doc, addDoc  } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
+import { useParams } from 'react-router-dom';
+
 export default function New(){
+   const { user } = useContext(AuthContext);
+   const { id } = useParams()
+
    const [customers, setCustomers] = useState([])
    const [loadCustomers, setLoadCustomers] = useState(true);
    const [customersSelected,setCustomersSelected] = useState(0)
@@ -18,7 +23,8 @@ export default function New(){
    const [complemento, setComplemento] = useState('')
    const [assunto, setAssunto] = useState('Suporte')
    const [status, setStatus] = useState('Aberto')
-   const { user } = useContext(AuthContext);
+   const [idCustomer, setIdCustomer] = useState(false)
+
 
    useEffect(() => {
       async function loadCustomers(){
@@ -39,6 +45,10 @@ export default function New(){
             }
             setCustomers(lista)
             setLoadCustomers(false)
+
+            if(id){
+               loadId(lista)
+            }
          })
          .catch((error) => {
             toast.error("Erro ao buscar clientes", error)
@@ -47,8 +57,25 @@ export default function New(){
          })
       }
       loadCustomers();
-   }, [])
+   }, [id])
 
+   async function loadId(lista){
+      const docRef = doc(db, "chamados", id)
+      await getDoc(docRef)
+      .then((snapshot) => {
+         setAssunto(snapshot.data().assunto)
+         setStatus(snapshot.data().status)
+         setComplemento(snapshot.data().complemento)
+
+         let index = lista.findIndex(item => item.id === snapshot.data().clienteId)
+         setCustomersSelected(index)
+         setIdCustomer(true)
+      })
+      .catch((error) => {
+         toast.error("Erro ao editar")
+         setIdCustomer(false)
+      })
+   }
 
    function handleOptionChange(e){
       setStatus(e.target.value)
@@ -64,6 +91,11 @@ export default function New(){
 
    async function handleRegister(e){
       e.preventDefault();
+
+      if(idCustomer){
+         alert("Editando chamado")
+         return;
+      }
 
       await addDoc(collection(db, "chamados"), {
          created: new Date(),
