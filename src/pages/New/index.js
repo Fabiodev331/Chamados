@@ -7,14 +7,15 @@ import { AuthContext } from '../../contexts/auth';
 import { FiPlusCircle} from 'react-icons/fi';
 
 import { db } from '../../services/firebaseConection';
-import { collection, getDoc, getDocs, doc, addDoc  } from 'firebase/firestore';
+import { collection, getDoc, getDocs, doc, addDoc, updateDoc  } from 'firebase/firestore';
 import { toast } from 'react-toastify';
 
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function New(){
    const { user } = useContext(AuthContext);
    const { id } = useParams()
+	 const navigate = useNavigate()
 
    const [customers, setCustomers] = useState([])
    const [loadCustomers, setLoadCustomers] = useState(true);
@@ -93,7 +94,24 @@ export default function New(){
       e.preventDefault();
 
       if(idCustomer){
-         alert("Editando chamado")
+         const docRef = doc(db, "chamados", id)
+         await updateDoc(docRef, {
+            cliente: customers[customersSelected].nomeFantasia,
+            clienteId: customers[customersSelected].id,
+            assunto: assunto,
+            status: status,
+            complemento: complemento,
+            userId: user.uid
+         })
+				 .then(() => {
+					toast.info("Chamado atualizado com sucesso!")
+					setCustomersSelected(0)
+					setComplemento('')
+					navigate("/dashboard")
+				 })
+				 .catch(() => {
+					toast.error("Ops erro ao atualizar esse chamado")
+				 })
          return;
       }
 
@@ -110,6 +128,7 @@ export default function New(){
          toast.success("Chamado registrado")
          setComplemento('')
          setCustomersSelected(0)
+				 navigate("/dashboard")
       })
       .catch((error) => {
          toast.error("Ops erro ao registar")
@@ -121,7 +140,7 @@ export default function New(){
          <SideBar/>
 
          <div className="content" >
-            <Title name="Novo chamado" >
+            <Title name={id ? "Editando chamado" : "Novo chamado"} >
                <FiPlusCircle size={24} />
             </Title>
 
@@ -189,7 +208,7 @@ export default function New(){
                      onChange={(e) => setComplemento(e.target.value)}
                   />
 
-                  <button type='submit'>Registar</button>
+                  <button type='submit'>{id ? "Atualizar" : "Registar"}</button>
             </form>
 
            </div>
