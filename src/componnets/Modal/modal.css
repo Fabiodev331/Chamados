@@ -1,0 +1,40 @@
+.modal{
+   position: fixed;
+   top: 0;
+   bottom: 0;
+   right: 0;
+   left: 0;
+   background-color: rgba(0, 0, 0, 0.6);
+   z-index: 99;
+}
+.modal .container-modal{
+   position: fixed;
+   background-color: #fff;
+   max-width: 600px;
+   top: 15%;
+   left: 0;
+   right: 0;
+   margin: 0 auto;
+   padding: 4em 2em;
+   box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+   border-radius: 5px;
+}
+.btn-modal{
+   background-color: #f65835;
+   border: 0;
+   border-radius: 5px;
+   position: absolute;
+   top: 15px;
+   left: 15px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 4px 10px;
+   color: #fff;
+}
+.btn-modal svg{
+   margin-right: 5px;
+}
+.modal h2{
+   font-size: 1.2em;
+}

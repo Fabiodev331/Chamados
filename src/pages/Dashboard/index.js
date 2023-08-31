@@ -11,6 +11,7 @@ import { collection, getDocs, orderBy, limit, startAfter, query } from 'firebase
 import { db } from '../../services/firebaseConection';
 
 import { format } from 'date-fns';
+import Modal from "../../componnets/Modal"
 
 const listRef = collection(db, "chamados")
 
@@ -159,6 +160,8 @@ export default function Dashboard() {
 				</>
 
 			</div>
+
+			<Modal/>
 
 		</div>
 	)
