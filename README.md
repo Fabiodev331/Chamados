@@ -1,4 +1,5 @@
 # Sistema Chamados
+Sistema desenvolvido para restaurentes e semelhantes 
 
 ## Página dashboard
 ![chamados](https://github.com/Fabiodev331/Chamados/assets/110556739/ce2493ab-d5ea-4894-95e2-c1a81672fbbf)
