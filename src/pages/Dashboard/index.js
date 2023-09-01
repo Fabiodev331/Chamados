@@ -22,6 +22,10 @@ export default function Dashboard() {
 	const [lastDocs, setLastDocs] = useState()
 	const [loadingMore, setLoadingMore] = useState(false)
 
+	const [showModal, setShoeModal] = useState(false)
+	const [detail, setDetail] = useState()
+
+
 	useEffect(() => {
 		async function loadingChamados() {
 			const q = query(listRef, orderBy('created', 'desc'), limit(5));
@@ -69,6 +73,12 @@ export default function Dashboard() {
 		const q = query(listRef, orderBy('created', 'desc'), startAfter(lastDocs), limit(5));
 		const querySnapshot = await getDocs(q)
 		await updateState(querySnapshot)
+	}
+
+	function handleModal(item){
+		setShoeModal(true)
+		setDetail(item)
+
 	}
 
 	if (loading) {
@@ -121,7 +131,7 @@ export default function Dashboard() {
 											<th scope='col'>Assunto</th>
 											<th scope='col'>Status</th>
 											<th scope='col'>Cadastrado em</th>
-											<th scope='col'>#</th>
+											<th scope='col'></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -137,7 +147,7 @@ export default function Dashboard() {
 													</td>
 													<td data-label='Cadastrado'>{item.createdFormat}</td>
 													<td data-label='#'>
-														<button className='action' style={{ backgroundColor: '#3583f6' }}>
+														<button className='action' style={{ backgroundColor: '#3583f6' }} onClick={() => handleModal(item)}>
 															<FiSearch size={17} color='#FFF' />
 														</button>
 														<Link to={`/new/${item.id}`} className='action' style={{ backgroundColor: '#f6a935' }}>
@@ -161,7 +171,12 @@ export default function Dashboard() {
 
 			</div>
 
-			<Modal/>
+			{showModal && (
+				<Modal
+					item={detail}
+					close={() => setShoeModal(false)}
+				/>
+			)}
 
 		</div>
 	)
